@@ -36,7 +36,6 @@ public class EvidenceController {
     }
 
     @GetMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public List<EvidenceView> findById(@PathVariable int id) {
         return service.find(id);
     }

@@ -33,13 +33,11 @@ public class ObjectiveController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public List<ObjectiveView> findAll() {
         return service.find();
     }
 
     @GetMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public ObjectiveView findById(@PathVariable int id) {
         return service.find(id);
     }
@@ -63,13 +61,11 @@ public class ObjectiveController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable int id) {
         service.delete(id);
     }
 
     @DeleteMapping
-    @ResponseStatus(HttpStatus.OK)
     public void deleteInBatch(@RequestBody List<ObjectiveForm> form) {
         service.deleteInBatch(form);
     }

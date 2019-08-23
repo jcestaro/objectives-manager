@@ -1,6 +1,7 @@
 package com.github.jcestaro.objectivesmanager.model.entity;
 
 import com.github.jcestaro.objectivesmanager.exception.CannotAddEvidenceException;
+import com.github.jcestaro.objectivesmanager.view.viewmodel.ObjectiveView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -149,6 +150,14 @@ public class Objective {
         this.evidences.add(evidence);
         return this;
     }
+
+    public ObjectiveView entityToView() {
+        return new ObjectiveView(this);
+    }
+
+//    public ObjectiveForm entityToForm() {
+//        return new ObjectiveForm(this); //Todo arrumar uma forma de nao ter uma lista de objetivos no form
+//    }
 
     public void updateStatus(ObjectiveStatus novoStatus) {
         this.status = novoStatus;

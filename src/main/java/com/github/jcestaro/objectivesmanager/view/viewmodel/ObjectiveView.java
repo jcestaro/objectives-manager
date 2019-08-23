@@ -5,13 +5,14 @@ import com.github.jcestaro.objectivesmanager.model.entity.ObjectiveStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ObjectiveView {
 
     private int id;
     private String title;
     private String description;
-    private List<Objective> objectives;
+    private List<ObjectiveView> objectives;
     private BigDecimal completionPercentage;
     private BigDecimal involvementPercentage;
     private BigDecimal necessityPercentage;
@@ -19,14 +20,9 @@ public class ObjectiveView {
     private ObjectiveStatus status;
     private BigDecimal priorityPercentage;
 
-    @Deprecated
-    public ObjectiveView() {
-    }
-
     public ObjectiveView(Objective objective) {
         this.title = objective.getTitle();
         this.description = objective.getDescription();
-        this.objectives = objective.getObjectives();
         this.completionPercentage = objective.getCompletionPercentage();
         this.involvementPercentage = objective.getInvolvementPercentage();
         this.necessityPercentage = objective.getNecessityPercentage();
@@ -34,6 +30,11 @@ public class ObjectiveView {
         this.id = objective.getId();
         this.status = objective.getStatus();
         this.priorityPercentage = objective.calculatePriority();
+
+        this.objectives = objective.getObjectives()
+            .stream()
+            .map(Objective::entityToView)
+            .collect(Collectors.toList());
     }
 
     public BigDecimal getPriorityPercentage() {
@@ -52,7 +53,7 @@ public class ObjectiveView {
         return description;
     }
 
-    public List<Objective> getObjectives() {
+    public List<ObjectiveView> getObjectives() {
         return objectives;
     }
 
