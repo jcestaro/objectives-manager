@@ -70,9 +70,4 @@ public class ObjectiveController {
     public void delete(@PathVariable int id) {
         facade.delete(id);
     }
-
-    @DeleteMapping
-    public void delete(@RequestBody List<ObjectiveForm> form) {
-        facade.delete(form);
-    }
 }

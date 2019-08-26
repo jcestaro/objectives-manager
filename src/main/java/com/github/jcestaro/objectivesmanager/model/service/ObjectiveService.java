@@ -38,9 +38,4 @@ public class ObjectiveService {
     public void delete(int id) {
         repository.deleteById(id);
     }
-
-    @Transactional
-    public void delete(List<Objective> objectives) {
-        repository.deleteAll(objectives);
-    }
 }

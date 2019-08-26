@@ -76,12 +76,4 @@ public class ObjectiveFacade {
     public void delete(int id) {
         service.delete(id);
     }
-
-    public void delete(List<ObjectiveForm> objectivesForm) {
-        List<Objective> objectives = objectivesForm.stream()
-            .map(ObjectiveForm::toEntity)
-            .collect(Collectors.toList());
-
-        service.delete(objectives);
-    }
 }
