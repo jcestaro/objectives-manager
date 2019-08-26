@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class ObjectiveTest {
 
     @Test
-    public void calculatePriority() {
+    public void shouldCalculateThePriorityAsExpected() {
         Objective objective =
             givenAObjectiveWithFilledFields();
 

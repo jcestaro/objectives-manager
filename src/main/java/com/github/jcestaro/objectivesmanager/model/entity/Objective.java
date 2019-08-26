@@ -99,6 +99,10 @@ public class Objective {
         return status;
     }
 
+    public String getStatusDescription() {
+        return status.getDescription();
+    }
+
     public int getId() {
         return id;
     }
