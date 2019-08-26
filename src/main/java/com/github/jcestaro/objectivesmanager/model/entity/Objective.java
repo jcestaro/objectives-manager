@@ -167,7 +167,7 @@ public class Objective {
             .map(Objective::getStatus)
             .allMatch(ObjectiveStatus.DONE::equals);
 
-        if (!allObjectivesDone) {
+        if (!allObjectivesDone && ObjectiveStatus.DONE.equals(newStatus)) {
             throw new CannotUpdateStatusException();
         }
 
