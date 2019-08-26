@@ -31,8 +31,8 @@ public class EvidenceController {
 
     @PostMapping(path = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestPart("archive") List<MultipartFile> archives, @PathVariable int id) throws IOException {
-        facade.save(archives, id);
+    public List<EvidenceView> save(@RequestPart("archive") List<MultipartFile> archives, @PathVariable int id) throws IOException {
+        return facade.save(archives, id);
     }
 
     @GetMapping(path = "/{id}")
