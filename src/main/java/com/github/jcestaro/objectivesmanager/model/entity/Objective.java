@@ -1,6 +1,7 @@
 package com.github.jcestaro.objectivesmanager.model.entity;
 
 import com.github.jcestaro.objectivesmanager.exception.CannotAddEvidenceException;
+import com.github.jcestaro.objectivesmanager.exception.CannotUpdateStatusException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -161,8 +162,16 @@ public class Objective {
         return this;
     }
 
-    public void updateStatus(ObjectiveStatus novoStatus) {
-        this.status = novoStatus;
+    public void updateStatus(ObjectiveStatus newStatus) {
+        boolean allObjectivesDone = getKeyResults().stream()
+            .map(Objective::getStatus)
+            .allMatch(ObjectiveStatus.DONE::equals);
+
+        if (!allObjectivesDone) {
+            throw new CannotUpdateStatusException();
+        }
+
+        this.status = newStatus;
     }
 
     private boolean allowToAddEvidence() {
