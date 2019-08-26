@@ -33,12 +33,8 @@ public class ObjectiveView {
 
         this.objectives = objective.getObjectives()
             .stream()
-            .map(Objective::entityToView)
+            .map(ObjectiveView::new)
             .collect(Collectors.toList());
-    }
-
-    public BigDecimal getPriorityPercentage() {
-        return priorityPercentage;
     }
 
     public int getId() {
@@ -75,5 +71,9 @@ public class ObjectiveView {
 
     public ObjectiveStatus getStatus() {
         return status;
+    }
+
+    public BigDecimal getPriorityPercentage() {
+        return priorityPercentage;
     }
 }

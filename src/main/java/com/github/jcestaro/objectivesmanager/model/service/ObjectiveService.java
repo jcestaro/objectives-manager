@@ -48,8 +48,10 @@ public class ObjectiveService {
     @Transactional
     public void update(ObjectiveForm form, int id) {
         Objective objective = repository.findById(id).get();
-        Objective updatedObjective = form.updateObjective(objective);
-        repository.save(updatedObjective);
+        Objective objectiveForm = form.formToEntity();
+
+        objective.update(objectiveForm);
+        repository.save(objective);
     }
 
     @Transactional

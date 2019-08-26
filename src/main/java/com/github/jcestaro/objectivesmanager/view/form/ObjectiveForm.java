@@ -5,8 +5,10 @@ import com.github.jcestaro.objectivesmanager.model.entity.Objective;
 import com.github.jcestaro.objectivesmanager.model.entity.ObjectiveStatus;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.validation.constraints.NotEmpty;
@@ -33,34 +35,23 @@ public class ObjectiveForm {
 
     @NotNull
     private BigDecimal urgencyPercentage;
-
-    private List<Objective> objectives;
+    private List<ObjectiveForm> objectives;
     private ObjectiveStatus status;
 
     public Objective formToEntity() {
         validateFields();
-        return new Objective(getTitle(),
-                             getDescription(),
-                             getObjectives(),
-                             getCompletionPercentage(),
-                             getInvolvementPercentage(),
-                             getNecessityPercentage(),
-                             getUrgencyPercentage());
+
+        List<Objective> toEntityObjectives = toEntityObjectivesList();
+
+        return new Objective(title,
+                             description,
+                             toEntityObjectives,
+                             completionPercentage,
+                             involvementPercentage,
+                             necessityPercentage,
+                             urgencyPercentage);
     }
 
-    public Objective updateObjective(Objective objective) {
-        validateFields();
-
-        objective.setTitle(this.getTitle());
-        objective.setDescription(this.getDescription());
-        objective.setObjectives(this.getObjectives());
-        objective.setInvolvementPercentage(this.getInvolvementPercentage());
-        objective.setNecessityPercentage(this.getNecessityPercentage());
-        objective.setCompletionPercentage(this.getCompletionPercentage());
-        objective.setUrgencyPercentage(this.getUrgencyPercentage());
-
-        return objective;
-    }
 
     private void validateFields() {
         boolean allFieldsFilled = Stream.of(title,
@@ -76,8 +67,22 @@ public class ObjectiveForm {
         }
     }
 
+    private List<Objective> toEntityObjectivesList() {
+        if (getObjectives() != null && !getObjectives().isEmpty()) {
+            return getObjectives().stream()
+                .map(ObjectiveForm::formToEntity)
+                .collect(Collectors.toList());
+        }
+
+        return new ArrayList<>();
+    }
+
     public ObjectiveStatus getStatus() {
         return status;
+    }
+
+    private List<ObjectiveForm> getObjectives() {
+        return objectives;
     }
 
     public String getTitle() {
@@ -86,10 +91,6 @@ public class ObjectiveForm {
 
     public String getDescription() {
         return description;
-    }
-
-    public List<Objective> getObjectives() {
-        return objectives;
     }
 
     public BigDecimal getCompletionPercentage() {
