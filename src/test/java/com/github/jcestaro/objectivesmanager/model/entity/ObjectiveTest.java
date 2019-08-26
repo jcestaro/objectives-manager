@@ -18,7 +18,7 @@ public class ObjectiveTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldCalculateThePriorityAsExpected() {
+    public void shouldReturnTheExpectedPriority() {
         Objective objective =
             givenAObjectiveWithFilledFields();
 
