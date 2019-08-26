@@ -40,7 +40,7 @@ public class ObjectiveService {
     }
 
     @Transactional
-    public void deleteInBatch(List<Objective> objectives) {
-        repository.deleteInBatch(objectives);
+    public void delete(List<Objective> objectives) {
+        repository.deleteAll(objectives);
     }
 }

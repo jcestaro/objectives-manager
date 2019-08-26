@@ -12,7 +12,10 @@ public class ObjectiveView {
     private int id;
     private String title;
     private String description;
-    private List<ObjectiveView> objectives;
+
+    //Todo fazer com que não devolva todos os objetivos para não carregar um json enorme
+    private List<ObjectiveView> keyResults;
+
     private BigDecimal completionPercentage;
     private BigDecimal involvementPercentage;
     private BigDecimal necessityPercentage;
@@ -31,7 +34,7 @@ public class ObjectiveView {
         this.status = objective.getStatus();
         this.priorityPercentage = objective.calculatePriority();
 
-        this.objectives = objective.getObjectives()
+        this.keyResults = objective.getKeyResults()
             .stream()
             .map(ObjectiveView::new)
             .collect(Collectors.toList());
@@ -49,8 +52,8 @@ public class ObjectiveView {
         return description;
     }
 
-    public List<ObjectiveView> getObjectives() {
-        return objectives;
+    public List<ObjectiveView> getKeyResults() {
+        return keyResults;
     }
 
     public BigDecimal getCompletionPercentage() {

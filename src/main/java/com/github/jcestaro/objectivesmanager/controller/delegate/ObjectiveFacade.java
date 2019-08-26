@@ -42,6 +42,16 @@ public class ObjectiveFacade {
         return new ObjectiveView(savedObjective);
     }
 
+    public ObjectiveView save(ObjectiveForm form, int id) {
+        Objective objective = service.find(id).get();
+        Objective objectiveFormToEntity = form.toEntity();
+
+        objective.addObjective(objectiveFormToEntity);
+        service.save(objective);
+
+        return new ObjectiveView(objective);
+    }
+
     public ObjectiveView update(ObjectiveForm form, int id) {
         Objective objective = service.find(id).get();
         Objective objectiveFormToEntity = form.toEntity();
@@ -67,11 +77,11 @@ public class ObjectiveFacade {
         service.delete(id);
     }
 
-    public void deleteInBatch(List<ObjectiveForm> objectivesForm) {
+    public void delete(List<ObjectiveForm> objectivesForm) {
         List<Objective> objectives = objectivesForm.stream()
             .map(ObjectiveForm::toEntity)
             .collect(Collectors.toList());
 
-        service.deleteInBatch(objectives);
+        service.delete(objectives);
     }
 }

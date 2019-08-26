@@ -35,17 +35,13 @@ public class ObjectiveForm {
 
     @NotNull
     private BigDecimal urgencyPercentage;
-    private List<ObjectiveForm> objectives;
     private ObjectiveStatus status;
 
     public Objective toEntity() {
         validateFields();
 
-        List<Objective> toEntityObjectives = toEntityObjectivesList();
-
         return new Objective(title,
                              description,
-                             toEntityObjectives,
                              completionPercentage,
                              involvementPercentage,
                              necessityPercentage,
@@ -53,36 +49,8 @@ public class ObjectiveForm {
     }
 
 
-    private void validateFields() {
-        boolean allFieldsFilled = Stream.of(title,
-                                            description,
-                                            completionPercentage,
-                                            involvementPercentage,
-                                            necessityPercentage,
-                                            urgencyPercentage)
-            .allMatch(Objects::nonNull);
-
-        if (!allFieldsFilled) {
-            throw new FieldsNotFilledException();
-        }
-    }
-
-    private List<Objective> toEntityObjectivesList() {
-        if (getObjectives() != null && !getObjectives().isEmpty()) {
-            return getObjectives().stream()
-                .map(ObjectiveForm::toEntity)
-                .collect(Collectors.toList());
-        }
-
-        return new ArrayList<>();
-    }
-
     public ObjectiveStatus getStatus() {
         return status;
-    }
-
-    private List<ObjectiveForm> getObjectives() {
-        return objectives;
     }
 
     public String getTitle() {
@@ -107,5 +75,47 @@ public class ObjectiveForm {
 
     public BigDecimal getUrgencyPercentage() {
         return urgencyPercentage;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCompletionPercentage(BigDecimal completionPercentage) {
+        this.completionPercentage = completionPercentage;
+    }
+
+    public void setInvolvementPercentage(BigDecimal involvementPercentage) {
+        this.involvementPercentage = involvementPercentage;
+    }
+
+    public void setNecessityPercentage(BigDecimal necessityPercentage) {
+        this.necessityPercentage = necessityPercentage;
+    }
+
+    public void setUrgencyPercentage(BigDecimal urgencyPercentage) {
+        this.urgencyPercentage = urgencyPercentage;
+    }
+
+    public void setStatus(ObjectiveStatus status) {
+        this.status = status;
+    }
+
+    private void validateFields() {
+        boolean allFieldsFilled = Stream.of(title,
+                                            description,
+                                            completionPercentage,
+                                            involvementPercentage,
+                                            necessityPercentage,
+                                            urgencyPercentage)
+            .allMatch(Objects::nonNull);
+
+        if (!allFieldsFilled) {
+            throw new FieldsNotFilledException();
+        }
     }
 }

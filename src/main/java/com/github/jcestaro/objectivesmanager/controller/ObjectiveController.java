@@ -48,6 +48,12 @@ public class ObjectiveController {
         return facade.save(form);
     }
 
+    @PostMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ObjectiveView saveKeyResult(@RequestBody @Valid ObjectiveForm form, @PathVariable int id) {
+        return facade.save(form, id);
+    }
+
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ObjectiveView update(@RequestBody @Valid ObjectiveForm form, @PathVariable int id) {
@@ -66,7 +72,7 @@ public class ObjectiveController {
     }
 
     @DeleteMapping
-    public void deleteInBatch(@RequestBody List<ObjectiveForm> form) {
-        facade.deleteInBatch(form);
+    public void delete(@RequestBody List<ObjectiveForm> form) {
+        facade.delete(form);
     }
 }
