@@ -38,7 +38,7 @@ public class ObjectiveForm {
     private List<ObjectiveForm> objectives;
     private ObjectiveStatus status;
 
-    public Objective formToEntity() {
+    public Objective toEntity() {
         validateFields();
 
         List<Objective> toEntityObjectives = toEntityObjectivesList();
@@ -70,7 +70,7 @@ public class ObjectiveForm {
     private List<Objective> toEntityObjectivesList() {
         if (getObjectives() != null && !getObjectives().isEmpty()) {
             return getObjectives().stream()
-                .map(ObjectiveForm::formToEntity)
+                .map(ObjectiveForm::toEntity)
                 .collect(Collectors.toList());
         }
 

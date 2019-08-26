@@ -115,7 +115,7 @@ public class Objective {
     }
 
     public List<Objective> getObjectives() {
-        return objectives;
+        return Collections.unmodifiableList(objectives);
     }
 
     public BigDecimal getCompletionPercentage() {
@@ -153,7 +153,6 @@ public class Objective {
     public Objective update(Objective form) {
         this.setTitle(form.getTitle());
         this.setDescription(form.getDescription());
-        this.setObjectives(form.getObjectives());
         this.setInvolvementPercentage(form.getInvolvementPercentage());
         this.setNecessityPercentage(form.getNecessityPercentage());
         this.setCompletionPercentage(form.getCompletionPercentage());

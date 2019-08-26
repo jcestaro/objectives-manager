@@ -1,6 +1,6 @@
 package com.github.jcestaro.objectivesmanager.controller;
 
-import com.github.jcestaro.objectivesmanager.model.service.ObjectiveService;
+import com.github.jcestaro.objectivesmanager.controller.delegate.ObjectiveFacade;
 import com.github.jcestaro.objectivesmanager.view.form.ObjectiveForm;
 import com.github.jcestaro.objectivesmanager.view.viewmodel.ObjectiveView;
 
@@ -25,48 +25,48 @@ import javax.validation.Valid;
 @RequestMapping("/objectives")
 public class ObjectiveController {
 
-    private ObjectiveService service;
+    private ObjectiveFacade facade;
 
     @Autowired
-    public ObjectiveController(ObjectiveService service) {
-        this.service = service;
+    public ObjectiveController(ObjectiveFacade facade) {
+        this.facade = facade;
     }
 
     @GetMapping
     public List<ObjectiveView> findAll() {
-        return service.find();
+        return facade.find();
     }
 
     @GetMapping(path = "/{id}")
     public ObjectiveView findById(@PathVariable int id) {
-        return service.find(id);
+        return facade.find(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ObjectiveView save(@RequestBody @Valid ObjectiveForm form) {
-        return service.save(form);
+        return facade.save(form);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void update(@RequestBody @Valid ObjectiveForm form, @PathVariable int id) {
-        service.update(form, id);
+    public ObjectiveView update(@RequestBody @Valid ObjectiveForm form, @PathVariable int id) {
+        return facade.update(form, id);
     }
 
     @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void updateStatus(@RequestBody ObjectiveForm form, @PathVariable int id) {
-        service.updateStatus(form, id);
+    public ObjectiveView updateStatus(@RequestBody ObjectiveForm form, @PathVariable int id) {
+        return facade.updateStatus(form, id);
     }
 
     @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable int id) {
-        service.delete(id);
+        facade.delete(id);
     }
 
     @DeleteMapping
     public void deleteInBatch(@RequestBody List<ObjectiveForm> form) {
-        service.deleteInBatch(form);
+        facade.deleteInBatch(form);
     }
 }
