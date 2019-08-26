@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -39,6 +41,13 @@ public class ObjectiveFacadeTest {
 
     @Test
     public void findAll() {
+        List<Objective> objectives =
+            givenAListOfObjectives();
+
+        List<ObjectiveView> objectivesViews =
+            whenSearchForAllObjectives(objectives);
+
+        bothListsShouldHaveTheSameSize(objectives, objectivesViews);
     }
 
     @Test
@@ -60,7 +69,11 @@ public class ObjectiveFacadeTest {
     @Test
     public void delete() {
     }
-    
+
+    private List<Objective> givenAListOfObjectives() {
+        return Arrays.asList(givenAObjectiveWithFilledFields(), givenAObjectiveWithFilledFields());
+    }
+
     private Objective givenAObjectiveWithFilledFields() {
         ObjectiveForm form = new ObjectiveForm();
         form.setCompletionPercentage(new BigDecimal(0.5));
@@ -77,6 +90,16 @@ public class ObjectiveFacadeTest {
         when(service.find(objective.getId())).thenReturn(Optional.of(objective));
 
         return facade.find(objective.getId());
+    }
+
+    private List<ObjectiveView> whenSearchForAllObjectives(List<Objective> objectives) {
+        when(service.find()).thenReturn(objectives);
+
+        return facade.find();
+    }
+
+    private void bothListsShouldHaveTheSameSize(List<Objective> objectives, List<ObjectiveView> objectivesViews) {
+        assertEquals(objectives.size(), objectivesViews.size());
     }
 
     private void objectiveAndObjectiveViewShouldHaveTheSameValues(Objective objective, ObjectiveView objectiveView) {
