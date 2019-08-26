@@ -1,6 +1,7 @@
 package com.github.jcestaro.objectivesmanager.model.entity;
 
 import com.github.jcestaro.objectivesmanager.exception.CannotAddEvidenceException;
+import com.github.jcestaro.objectivesmanager.exception.CannotUpdateStatusException;
 import com.github.jcestaro.objectivesmanager.view.form.ObjectiveForm;
 
 import org.junit.Rule;
@@ -36,32 +37,69 @@ public class ObjectiveTest {
             givenAObjectiveWithFilledFields();
 
         whenAttemptToAddEvidence(objective);
-
-        //should Throw CannotAddEvidenceException
     }
 
     @Test
-    public void update() {
+    public void shouldAddEvidenceWhenStatusIsDone() {
+        Objective objective =
+            givenAObjectiveWithFilledFields();
 
+        whenUpdateStatusAndAddEvidence(objective, ObjectiveStatus.DONE);
+
+        shouldAddTheEvidenceToTheObjective(objective);
     }
 
     @Test
-    public void updateStatus() {
+    public void shouldAddEvidenceWhenStatusIsDiscontinued() {
+        Objective objective =
+            givenAObjectiveWithFilledFields();
 
+        whenUpdateStatusAndAddEvidence(objective, ObjectiveStatus.DISCONTINUED);
+
+        shouldAddTheEvidenceToTheObjective(objective);
     }
 
-    private void whenAttemptToAddEvidence(Objective objective) {
-        Evidence evidence = new Evidence(objective, "/images");
-        objective.addEvidence(evidence);
+    @Test
+    public void shouldThrowExceptionCaseAttemptToUpdateObjectiveStatusWithoutUpdateKeyResultsStatusToDone() {
+        expectedException.expect(CannotUpdateStatusException.class);
+        expectedException.expectMessage("Was'nt possible to update your status to Done because there's objectives In Progress or Discontinued");
+
+        Objective objective =
+            givenAObjectiveWithFilledFields();
+
+        whenAddedKeyResultsWithInProgressStatus(objective);
+
+        whenUpdateStatus(objective, ObjectiveStatus.DONE);
     }
 
-    private void shouldReturnTheExpectedPriority(BigDecimal priority) {
-        BigDecimal expectedValue = new BigDecimal(0.50).setScale(2);
-        assertEquals(expectedValue, priority);
+    @Test
+    public void shouldAllowToUpdateStatusToDoneWhenAllKeyResultsAreDone() {
+        Objective objective =
+            givenAObjectiveThatContainsKeyResultWithStatusDone();
+
+        whenUpdateStatus(objective, ObjectiveStatus.DONE);
+
+        shouldUpdateTheStatusToDoneWithoutProblem(objective);
     }
 
-    private BigDecimal whenTheObjectiveCalculatePriority(Objective objective) {
-        return objective.calculatePriority();
+    @Test
+    public void shouldAllowToUpdateStatusToDiscontinuedWhenThereIsKeyResults() {
+        Objective objective =
+            givenAObjectiveThatContainsKeyResultWithStatusDone();
+
+        whenUpdateStatus(objective, ObjectiveStatus.DISCONTINUED);
+
+        shouldUpdateTheStatusToDiscontinuedWithoutProblem(objective);
+    }
+
+    @Test
+    public void shouldAllowToUpdateStatusToDiscontinued() {
+        Objective objective =
+            givenAObjectiveWithFilledFields();
+
+        whenUpdateStatus(objective, ObjectiveStatus.DISCONTINUED);
+
+        shouldUpdateTheStatusToDiscontinuedWithoutProblem(objective);
     }
 
     private Objective givenAObjectiveWithFilledFields() {
@@ -74,5 +112,58 @@ public class ObjectiveTest {
         form.setTitle("Test");
 
         return form.toEntity();
+    }
+
+    private Objective givenAObjectiveThatContainsKeyResultWithStatusDone() {
+        Objective objective = givenAObjectiveWithFilledFields();
+
+        Objective objectiveWithStatusDone = givenAObjectiveWithFilledFields();
+        objectiveWithStatusDone.updateStatus(ObjectiveStatus.DONE);
+
+        objective.addObjective(objectiveWithStatusDone);
+        return objective;
+    }
+
+    private void whenUpdateStatus(Objective objective, ObjectiveStatus status) {
+        objective.updateStatus(status);
+    }
+
+    private void whenAddedKeyResultsWithInProgressStatus(Objective objective) {
+        objective.addObjective(objective);
+    }
+
+    private void whenUpdateStatusAndAddEvidence(Objective objective, ObjectiveStatus status) {
+        whenUpdateStatus(objective, status);
+        whenAttemptToAddEvidence(objective);
+    }
+
+    private void whenAttemptToAddEvidence(Objective objective) {
+        Evidence evidence = new Evidence(objective, "/images");
+        objective.addEvidence(evidence);
+    }
+
+    private BigDecimal whenTheObjectiveCalculatePriority(Objective objective) {
+        return objective.calculatePriority();
+    }
+
+    private void shouldUpdateTheStatusToDoneWithoutProblem(Objective objective) {
+        shouldUpdateTheStatus(ObjectiveStatus.DONE, objective);
+    }
+
+    private void shouldUpdateTheStatusToDiscontinuedWithoutProblem(Objective objective) {
+        shouldUpdateTheStatus(ObjectiveStatus.DISCONTINUED, objective);
+    }
+
+    private void shouldUpdateTheStatus(ObjectiveStatus expectedStatus, Objective expectedObjective) {
+        assertEquals(expectedStatus, expectedObjective.getStatus());
+    }
+
+    private void shouldAddTheEvidenceToTheObjective(Objective objective) {
+        assertEquals(1, objective.getEvidences().size());
+    }
+
+    private void shouldReturnTheExpectedPriority(BigDecimal priority) {
+        BigDecimal expectedValue = new BigDecimal(0.50).setScale(2);
+        assertEquals(expectedValue, priority);
     }
 }
