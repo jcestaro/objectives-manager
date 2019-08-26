@@ -167,15 +167,21 @@ public class Objective {
     }
 
     public void updateStatus(ObjectiveStatus newStatus) {
-        boolean allObjectivesDone = getKeyResults().stream()
-            .map(Objective::getStatus)
-            .allMatch(ObjectiveStatus.DONE::equals);
-
-        if (!allObjectivesDone && ObjectiveStatus.DONE.equals(newStatus)) {
+        if (hasObjectivesUndone() && ObjectiveStatus.DONE.equals(newStatus)) {
             throw new CannotUpdateStatusException();
         }
 
         this.status = newStatus;
+    }
+
+    private boolean isAllObjectivesDone() {
+        return getKeyResults().stream()
+                .map(Objective::getStatus)
+                .allMatch(ObjectiveStatus.DONE::equals);
+    }
+
+    private boolean hasObjectivesUndone() {
+        return !isAllObjectivesDone();
     }
 
     private boolean allowToAddEvidence() {
