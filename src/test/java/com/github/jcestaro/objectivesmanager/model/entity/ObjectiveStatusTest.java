@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;
 
 public class ObjectiveStatusTest {
@@ -40,7 +41,7 @@ public class ObjectiveStatusTest {
     }
 
     private void shouldReturnTheExpectedNumberOfStatusThatAllowToAddEvidences(List<ObjectiveStatus> objectiveStatusList) {
-        assertEquals(2, objectiveStatusList.size());
+        assertThat(objectiveStatusList, containsInAnyOrder(ObjectiveStatus.DISCONTINUED, ObjectiveStatus.DONE));
     }
 
     private void shouldReturnFalse(boolean condition) {
