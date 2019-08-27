@@ -155,13 +155,13 @@ public class Objective {
         return this;
     }
 
-    public Objective update(Objective form) {
-        this.setTitle(form.getTitle());
-        this.setDescription(form.getDescription());
-        this.setInvolvementPercentage(form.getInvolvementPercentage());
-        this.setNecessityPercentage(form.getNecessityPercentage());
-        this.setCompletionPercentage(form.getCompletionPercentage());
-        this.setUrgencyPercentage(form.getUrgencyPercentage());
+    public Objective update(Objective formAsEntity) {
+        this.setTitle(formAsEntity.getTitle());
+        this.setDescription(formAsEntity.getDescription());
+        this.setInvolvementPercentage(formAsEntity.getInvolvementPercentage());
+        this.setNecessityPercentage(formAsEntity.getNecessityPercentage());
+        this.setCompletionPercentage(formAsEntity.getCompletionPercentage());
+        this.setUrgencyPercentage(formAsEntity.getUrgencyPercentage());
 
         return this;
     }
