@@ -1,6 +1,7 @@
 package com.github.jcestaro.objectivesmanager.controller.delegate;
 
 import com.github.jcestaro.objectivesmanager.exception.CannotSaveEvidenceException;
+import com.github.jcestaro.objectivesmanager.exception.ObjectiveNotFoundException;
 import com.github.jcestaro.objectivesmanager.model.entity.Evidence;
 import com.github.jcestaro.objectivesmanager.model.entity.Objective;
 import com.github.jcestaro.objectivesmanager.model.service.ObjectiveService;
@@ -19,6 +20,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @Component
 public class EvidenceFacade {
 
@@ -34,7 +38,8 @@ public class EvidenceFacade {
     }
 
     public List<EvidenceView> find(int id) {
-        Objective objective = objectiveService.find(id).get();
+        Objective objective = objectiveService.find(id)
+            .orElseThrow(ObjectiveNotFoundException::new);
 
         return objective.getEvidences()
             .stream()
@@ -42,12 +47,13 @@ public class EvidenceFacade {
             .collect(Collectors.toList());
     }
 
-    public List<EvidenceView> save(List<MultipartFile> archives, int id) throws IOException {
+    public List<EvidenceView> save(@NotNull @NotEmpty List<MultipartFile> archives, int id) throws IOException {
         File folder = new File(System.getProperty("user.home") + directoryPath);
 
         Files.createDirectories(folder.toPath());
 
-        Objective objective = objectiveService.find(id).get();
+        Objective objective = objectiveService.find(id)
+            .orElseThrow(ObjectiveNotFoundException::new);
 
         for (MultipartFile archive : archives) {
             File archiveReceived = new File(folder, Objects.requireNonNull(archive.getOriginalFilename()));
