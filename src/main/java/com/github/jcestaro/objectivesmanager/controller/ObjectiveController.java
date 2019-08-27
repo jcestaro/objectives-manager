@@ -37,7 +37,7 @@ public class ObjectiveController {
         return facade.find();
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/{id}")
     public ObjectiveView findById(@PathVariable int id) {
         return facade.find(id);
     }
@@ -48,25 +48,24 @@ public class ObjectiveController {
         return facade.save(form);
     }
 
-    @PostMapping(path = "/{id}")
+    @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public ObjectiveView saveKeyResult(@RequestBody @Valid ObjectiveForm form, @PathVariable int id) {
         return facade.save(form, id);
     }
 
-    @PutMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping("/{id}")
     public ObjectiveView update(@RequestBody @Valid ObjectiveForm form, @PathVariable int id) {
         return facade.update(form, id);
     }
 
-    @PatchMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PatchMapping("/{id}")
     public ObjectiveView updateStatus(@RequestBody ObjectiveForm form, @PathVariable int id) {
         return facade.updateStatus(form, id);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         facade.delete(id);
     }

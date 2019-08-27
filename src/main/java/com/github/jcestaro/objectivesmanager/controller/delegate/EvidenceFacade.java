@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 @Component
 public class EvidenceFacade {
 
@@ -44,7 +42,6 @@ public class EvidenceFacade {
             .collect(Collectors.toList());
     }
 
-    @Transactional
     public List<EvidenceView> save(List<MultipartFile> archives, int id) throws IOException {
         File folder = new File(System.getProperty("user.home") + directoryPath);
 

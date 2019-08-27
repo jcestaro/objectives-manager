@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/evidences")
+@RequestMapping("/objectives/{id}/evidences")
 public class EvidenceController {
 
     private EvidenceFacade facade;
@@ -29,13 +29,13 @@ public class EvidenceController {
         this.facade = facade;
     }
 
-    @PostMapping(path = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     public List<EvidenceView> save(@RequestPart("archive") List<MultipartFile> archives, @PathVariable int id) throws IOException {
         return facade.save(archives, id);
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping
     public List<EvidenceView> findById(@PathVariable int id) {
         return facade.find(id);
     }
