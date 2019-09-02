@@ -2,6 +2,7 @@ package com.github.jcestaro.objectivesmanager.model.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum ObjectiveStatus {
 
@@ -25,6 +26,12 @@ public enum ObjectiveStatus {
         status.add(ObjectiveStatus.DONE);
 
         return status;
+    }
+
+    public static List<String> descriptionOfStatusWhereYouCanAddEvidences() {
+        return statusWhereYouCanAddEvidences().stream()
+            .map(ObjectiveStatus::getDescription)
+            .collect(Collectors.toList());
     }
 
     public static boolean allowToAddEvidence(ObjectiveStatus status) {

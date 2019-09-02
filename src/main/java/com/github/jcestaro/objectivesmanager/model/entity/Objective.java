@@ -1,12 +1,13 @@
 package com.github.jcestaro.objectivesmanager.model.entity;
 
 import com.github.jcestaro.objectivesmanager.exception.CannotAddEvidenceException;
-import com.github.jcestaro.objectivesmanager.view.viewmodel.ObjectiveView;
+import com.github.jcestaro.objectivesmanager.exception.CannotUpdateStatusException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -30,7 +31,7 @@ public class Objective {
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Objective> objectives;
+    private List<Objective> keyResults;
 
     @Enumerated(value = EnumType.STRING)
     private ObjectiveStatus status;
@@ -49,7 +50,6 @@ public class Objective {
 
     public Objective(String title,
                      String description,
-                     List<Objective> objectives,
                      BigDecimal completionPercentage,
                      BigDecimal involvementPercentage,
                      BigDecimal necessityPercentage,
@@ -57,7 +57,6 @@ public class Objective {
 
         this.title = title;
         this.description = description;
-        this.objectives = objectives;
         this.completionPercentage = completionPercentage;
         this.involvementPercentage = involvementPercentage;
         this.necessityPercentage = necessityPercentage;
@@ -65,6 +64,7 @@ public class Objective {
 
         this.status = ObjectiveStatus.IN_PROGRESS;
         this.evidences = new ArrayList<>();
+        this.keyResults = new ArrayList<>();
     }
 
     public void setTitle(String title) {
@@ -73,10 +73,6 @@ public class Objective {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setObjectives(List<Objective> objectives) {
-        this.objectives = objectives;
     }
 
     public void setCompletionPercentage(BigDecimal completionPercentage) {
@@ -103,6 +99,10 @@ public class Objective {
         return status;
     }
 
+    public String getStatusDescription() {
+        return status.getDescription();
+    }
+
     public int getId() {
         return id;
     }
@@ -115,8 +115,8 @@ public class Objective {
         return description;
     }
 
-    public List<Objective> getObjectives() {
-        return objectives;
+    public List<Objective> getKeyResults() {
+        return Collections.unmodifiableList(keyResults);
     }
 
     public BigDecimal getCompletionPercentage() {
@@ -143,6 +143,10 @@ public class Objective {
             .divide(NUMBER_OF_FIELDS_FOR_AVERAGE, SCALE, BigDecimal.ROUND_HALF_UP);
     }
 
+    public void addObjective(Objective objective) {
+        this.keyResults.add(Objects.requireNonNull(objective));
+    }
+
     public Objective addEvidence(Evidence evidence) {
         if (itsNotPossibleToAddEvidence()) {
             throw new CannotAddEvidenceException(this);
@@ -151,16 +155,33 @@ public class Objective {
         return this;
     }
 
-    public ObjectiveView entityToView() {
-        return new ObjectiveView(this);
+    public Objective update(Objective formAsEntity) {
+        this.setTitle(formAsEntity.getTitle());
+        this.setDescription(formAsEntity.getDescription());
+        this.setInvolvementPercentage(formAsEntity.getInvolvementPercentage());
+        this.setNecessityPercentage(formAsEntity.getNecessityPercentage());
+        this.setCompletionPercentage(formAsEntity.getCompletionPercentage());
+        this.setUrgencyPercentage(formAsEntity.getUrgencyPercentage());
+
+        return this;
     }
 
-//    public ObjectiveForm entityToForm() {
-//        return new ObjectiveForm(this); //Todo arrumar uma forma de nao ter uma lista de objetivos no form
-//    }
+    public void updateStatus(ObjectiveStatus newStatus) {
+        if (hasObjectivesUndone() && ObjectiveStatus.DONE.equals(newStatus)) {
+            throw new CannotUpdateStatusException();
+        }
 
-    public void updateStatus(ObjectiveStatus novoStatus) {
-        this.status = novoStatus;
+        this.status = newStatus;
+    }
+
+    private boolean isAllObjectivesDone() {
+        return getKeyResults().stream()
+                .map(Objective::getStatus)
+                .allMatch(ObjectiveStatus.DONE::equals);
+    }
+
+    private boolean hasObjectivesUndone() {
+        return !isAllObjectivesDone();
     }
 
     private boolean allowToAddEvidence() {
