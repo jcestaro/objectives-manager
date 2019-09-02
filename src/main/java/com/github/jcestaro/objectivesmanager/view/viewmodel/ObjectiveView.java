@@ -5,13 +5,17 @@ import com.github.jcestaro.objectivesmanager.model.entity.ObjectiveStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ObjectiveView {
 
     private int id;
     private String title;
     private String description;
-    private List<Objective> objectives;
+
+    //Todo fazer com que não devolva todos os objetivos para não carregar um json enorme
+    private List<ObjectiveView> keyResults;
+
     private BigDecimal completionPercentage;
     private BigDecimal involvementPercentage;
     private BigDecimal necessityPercentage;
@@ -19,14 +23,9 @@ public class ObjectiveView {
     private ObjectiveStatus status;
     private BigDecimal priorityPercentage;
 
-    @Deprecated
-    public ObjectiveView() {
-    }
-
     public ObjectiveView(Objective objective) {
         this.title = objective.getTitle();
         this.description = objective.getDescription();
-        this.objectives = objective.getObjectives();
         this.completionPercentage = objective.getCompletionPercentage();
         this.involvementPercentage = objective.getInvolvementPercentage();
         this.necessityPercentage = objective.getNecessityPercentage();
@@ -34,10 +33,11 @@ public class ObjectiveView {
         this.id = objective.getId();
         this.status = objective.getStatus();
         this.priorityPercentage = objective.calculatePriority();
-    }
 
-    public BigDecimal getPriorityPercentage() {
-        return priorityPercentage;
+        this.keyResults = objective.getKeyResults()
+            .stream()
+            .map(ObjectiveView::new)
+            .collect(Collectors.toList());
     }
 
     public int getId() {
@@ -52,8 +52,8 @@ public class ObjectiveView {
         return description;
     }
 
-    public List<Objective> getObjectives() {
-        return objectives;
+    public List<ObjectiveView> getKeyResults() {
+        return keyResults;
     }
 
     public BigDecimal getCompletionPercentage() {
@@ -74,5 +74,9 @@ public class ObjectiveView {
 
     public ObjectiveStatus getStatus() {
         return status;
+    }
+
+    public BigDecimal getPriorityPercentage() {
+        return priorityPercentage;
     }
 }

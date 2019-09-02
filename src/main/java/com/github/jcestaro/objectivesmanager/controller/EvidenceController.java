@@ -1,6 +1,6 @@
 package com.github.jcestaro.objectivesmanager.controller;
 
-import com.github.jcestaro.objectivesmanager.model.service.EvidenceService;
+import com.github.jcestaro.objectivesmanager.controller.delegate.EvidenceFacade;
 import com.github.jcestaro.objectivesmanager.view.viewmodel.EvidenceView;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +19,24 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/evidences")
+@RequestMapping("/objectives/{id}/evidences")
 public class EvidenceController {
 
-    private EvidenceService service;
+    private EvidenceFacade facade;
 
     @Autowired
-    public EvidenceController(EvidenceService service) {
-        this.service = service;
+    public EvidenceController(EvidenceFacade facade) {
+        this.facade = facade;
     }
 
-    @PostMapping(path = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestPart("archive") List<MultipartFile> archives, @PathVariable int id) throws IOException {
-        service.save(archives, id);
+    public List<EvidenceView> save(@RequestPart("archive") List<MultipartFile> archives, @PathVariable int id) throws IOException {
+        return facade.save(archives, id);
     }
 
-    @GetMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
     public List<EvidenceView> findById(@PathVariable int id) {
-        return service.find(id);
+        return facade.find(id);
     }
 }

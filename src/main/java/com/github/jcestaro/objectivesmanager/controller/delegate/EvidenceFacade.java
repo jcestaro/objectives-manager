@@ -1,49 +1,45 @@
-package com.github.jcestaro.objectivesmanager.model.service;
+package com.github.jcestaro.objectivesmanager.controller.delegate;
 
 import com.github.jcestaro.objectivesmanager.exception.CannotSaveEvidenceException;
 import com.github.jcestaro.objectivesmanager.exception.ObjectiveNotFoundException;
 import com.github.jcestaro.objectivesmanager.model.entity.Evidence;
 import com.github.jcestaro.objectivesmanager.model.entity.Objective;
-import com.github.jcestaro.objectivesmanager.model.repository.ObjectiveRepository;
+import com.github.jcestaro.objectivesmanager.model.service.ObjectiveService;
 import com.github.jcestaro.objectivesmanager.view.viewmodel.EvidenceView;
 
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-@Service
-public class EvidenceService {
+@Component
+public class EvidenceFacade {
 
     private static final String ERROR_MESSAGE_ADD_EVIDENCE = "Was'nt possible to add your evidences!";
     private String directoryPath;
 
-    private ObjectiveRepository objectiveRepository;
+    private ObjectiveService objectiveService;
 
     @Autowired
-    public EvidenceService(ObjectiveRepository objectiveRepository, @Value("${directory.path}") String directoryPath) {
+    public EvidenceFacade(ObjectiveService objectiveService, @Value("${directory.path}") String directoryPath) {
         this.directoryPath = directoryPath;
-        this.objectiveRepository = objectiveRepository;
+        this.objectiveService = objectiveService;
     }
 
     public List<EvidenceView> find(int id) {
-        Objective objective = objectiveRepository.findById(id).get();
-
-        // TODO achar um jeito de carregar a imagem salva na máquina através do caminho dela salvo na Evidência
+        Objective objective = objectiveService.find(id)
+            .orElseThrow(ObjectiveNotFoundException::new);
 
         return objective.getEvidences()
             .stream()
@@ -51,13 +47,13 @@ public class EvidenceService {
             .collect(Collectors.toList());
     }
 
-    @Transactional
-    public void save(List<MultipartFile> archives, int id) throws IOException {
+    public List<EvidenceView> save(@NotNull @NotEmpty List<MultipartFile> archives, int id) throws IOException {
         File folder = new File(System.getProperty("user.home") + directoryPath);
 
         Files.createDirectories(folder.toPath());
 
-        Objective objective = objectiveRepository.findById(id).get();
+        Objective objective = objectiveService.find(id)
+            .orElseThrow(ObjectiveNotFoundException::new);
 
         for (MultipartFile archive : archives) {
             File archiveReceived = new File(folder, Objects.requireNonNull(archive.getOriginalFilename()));
@@ -71,6 +67,11 @@ public class EvidenceService {
             }
         }
 
-        objectiveRepository.save(objective);
+        Objective savedObjective = objectiveService.save(objective);
+
+        return savedObjective.getEvidences()
+            .stream()
+            .map(EvidenceView::new)
+            .collect(Collectors.toList());
     }
 }
