@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 public class EvidenceFacade {
 
     private static final String ERROR_MESSAGE_ADD_EVIDENCE = "Was'nt possible to add your evidences!";
+    private static final String USER_HOME = "user.home";
     private String directoryPath;
 
     private ObjectiveService objectiveService;
@@ -38,17 +39,16 @@ public class EvidenceFacade {
     }
 
     public List<EvidenceView> find(int id) {
-        Objective objective = objectiveService.find(id)
-            .orElseThrow(ObjectiveNotFoundException::new);
-
-        return objective.getEvidences()
+        return objectiveService.find(id)
+            .orElseThrow(ObjectiveNotFoundException::new)
+            .getEvidences()
             .stream()
             .map(EvidenceView::new)
             .collect(Collectors.toList());
     }
 
     public List<EvidenceView> save(@NotNull @NotEmpty List<MultipartFile> archives, int id) throws IOException {
-        File folder = new File(System.getProperty("user.home") + directoryPath);
+        File folder = new File(System.getProperty(USER_HOME) + directoryPath);
 
         Files.createDirectories(folder.toPath());
 
@@ -67,9 +67,7 @@ public class EvidenceFacade {
             }
         }
 
-        Objective savedObjective = objectiveService.save(objective);
-
-        return savedObjective.getEvidences()
+        return objectiveService.save(objective).getEvidences()
             .stream()
             .map(EvidenceView::new)
             .collect(Collectors.toList());

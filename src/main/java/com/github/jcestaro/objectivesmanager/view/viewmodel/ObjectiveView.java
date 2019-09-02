@@ -12,10 +12,7 @@ public class ObjectiveView {
     private int id;
     private String title;
     private String description;
-
-    //Todo fazer com que não devolva todos os objetivos para não carregar um json enorme
     private List<ObjectiveView> keyResults;
-
     private BigDecimal completionPercentage;
     private BigDecimal involvementPercentage;
     private BigDecimal necessityPercentage;

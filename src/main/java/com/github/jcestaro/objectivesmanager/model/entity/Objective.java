@@ -67,27 +67,27 @@ public class Objective {
         this.keyResults = new ArrayList<>();
     }
 
-    public void setTitle(String title) {
+    private void setTitle(String title) {
         this.title = title;
     }
 
-    public void setDescription(String description) {
+    private void setDescription(String description) {
         this.description = description;
     }
 
-    public void setCompletionPercentage(BigDecimal completionPercentage) {
+    private void setCompletionPercentage(BigDecimal completionPercentage) {
         this.completionPercentage = completionPercentage;
     }
 
-    public void setInvolvementPercentage(BigDecimal involvementPercentage) {
+    private void setInvolvementPercentage(BigDecimal involvementPercentage) {
         this.involvementPercentage = involvementPercentage;
     }
 
-    public void setNecessityPercentage(BigDecimal necessityPercentage) {
+    private void setNecessityPercentage(BigDecimal necessityPercentage) {
         this.necessityPercentage = necessityPercentage;
     }
 
-    public void setUrgencyPercentage(BigDecimal urgencyPercentage) {
+    private void setUrgencyPercentage(BigDecimal urgencyPercentage) {
         this.urgencyPercentage = urgencyPercentage;
     }
 
@@ -176,8 +176,8 @@ public class Objective {
 
     private boolean isAllObjectivesDone() {
         return getKeyResults().stream()
-                .map(Objective::getStatus)
-                .allMatch(ObjectiveStatus.DONE::equals);
+            .map(Objective::getStatus)
+            .allMatch(ObjectiveStatus.DONE::equals);
     }
 
     private boolean hasObjectivesUndone() {
