@@ -1,27 +1,33 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home';
-import Objective from './components/Objective';
-import Evidence from './components/Evidence';
+import ConsultEvidence from './views/ConsultEvidence';
+import CreateEvidence from './views/CreateEvidence';
+import ConsultObjective from './views/ConsultObjective';
+import CreateObjective from './views/CreateObjective';
 
 Vue.use(Router);
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home,
+      path: '/objective/consult',
+      name: 'consultObjective',
+      component: ConsultObjective,
     },
     {
-      path: '/objective',
-      name: 'objective',
-      component: Objective,
+      path: '/objective/create',
+      name: 'createObjective',
+      component: CreateObjective,
     },
     {
-      path: '/evidence',
-      name: 'evidence',
-      component: Evidence,
+      path: '/evidence/consult',
+      name: 'consultEvidence',
+      component: ConsultEvidence,
+    },
+    {
+      path: '/evidence/create',
+      name: 'createEvidence',
+      component: CreateEvidence,
     },
   ],
 });
