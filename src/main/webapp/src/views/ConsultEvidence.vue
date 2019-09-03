@@ -1,13 +1,32 @@
 <template>
-    <h1>AAAAAA</h1>
+    <tabulator :data="data" :columns="columns"></tabulator>
 </template>
 
 <script>
-export default {
-  name: 'ConsultEvidence',
-};
+    import Tabulator from "../components/Tabulator";
+
+    export default {
+        name: 'ConsultEvidence',
+        components: {
+            Tabulator
+        },
+
+        data: function () {
+            return {
+                data: {}
+            }
+        },
+        computed: {
+            columns() {
+                return [
+                    {title: 'name', field: 'name'},
+                    {title: 'E-mail', field: 'email'},
+                    {title: 'Phone', field: 'phone'}]
+            }
+        },
+    };
 </script>
 
-<style scoped>
+<style scoped="scss">
 
 </style>
