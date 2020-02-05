@@ -6,14 +6,12 @@ import com.github.jcestaro.objectivesmanager.model.entity.ObjectiveStatus;
 import com.github.jcestaro.objectivesmanager.model.service.ObjectiveService;
 import com.github.jcestaro.objectivesmanager.view.form.ObjectiveForm;
 import com.github.jcestaro.objectivesmanager.view.viewmodel.ObjectiveView;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.validation.constraints.NotNull;
 
 @Component
 public class ObjectiveFacade {
@@ -27,13 +25,13 @@ public class ObjectiveFacade {
 
     public List<ObjectiveView> find() {
         return service.find().stream()
-            .map(ObjectiveView::new)
-            .collect(Collectors.toList());
+                .map(ObjectiveView::new)
+                .collect(Collectors.toList());
     }
 
     public ObjectiveView find(int id) {
         Objective objective = service.find(id)
-            .orElseThrow(ObjectiveNotFoundException::new);
+                .orElseThrow(ObjectiveNotFoundException::new);
 
         return new ObjectiveView(objective);
     }
@@ -49,7 +47,7 @@ public class ObjectiveFacade {
         Objective objectiveFormToEntity = form.toEntity();
 
         Objective objective = service.find(id)
-            .orElseThrow(ObjectiveNotFoundException::new);
+                .orElseThrow(ObjectiveNotFoundException::new);
 
         objective.addObjective(objectiveFormToEntity);
         service.save(objective);
@@ -61,7 +59,7 @@ public class ObjectiveFacade {
         Objective objectiveFormToEntity = form.toEntity();
 
         Objective objective = service.find(id)
-            .orElseThrow(ObjectiveNotFoundException::new);
+                .orElseThrow(ObjectiveNotFoundException::new);
 
         objective.update(objectiveFormToEntity);
         Objective savedObjective = service.save(objective);
@@ -73,7 +71,7 @@ public class ObjectiveFacade {
         ObjectiveStatus newStatus = form.getStatus();
 
         Objective objective = service.find(id)
-            .orElseThrow(ObjectiveNotFoundException::new);
+                .orElseThrow(ObjectiveNotFoundException::new);
 
         objective.updateStatus(newStatus);
 

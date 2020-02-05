@@ -4,15 +4,11 @@ import com.github.jcestaro.objectivesmanager.exception.FieldsNotFilledException;
 import com.github.jcestaro.objectivesmanager.model.entity.Objective;
 import com.github.jcestaro.objectivesmanager.model.entity.ObjectiveStatus;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 public class ObjectiveForm {
 
@@ -41,11 +37,11 @@ public class ObjectiveForm {
         validateFields();
 
         return new Objective(title,
-                             description,
-                             completionPercentage,
-                             involvementPercentage,
-                             necessityPercentage,
-                             urgencyPercentage);
+                description,
+                completionPercentage,
+                involvementPercentage,
+                necessityPercentage,
+                urgencyPercentage);
     }
 
 
@@ -107,12 +103,12 @@ public class ObjectiveForm {
 
     private void validateFields() {
         boolean allFieldsFilled = Stream.of(title,
-                                            description,
-                                            completionPercentage,
-                                            involvementPercentage,
-                                            necessityPercentage,
-                                            urgencyPercentage)
-            .allMatch(Objects::nonNull);
+                description,
+                completionPercentage,
+                involvementPercentage,
+                necessityPercentage,
+                urgencyPercentage)
+                .allMatch(Objects::nonNull);
 
         if (!allFieldsFilled) {
             throw new FieldsNotFilledException();

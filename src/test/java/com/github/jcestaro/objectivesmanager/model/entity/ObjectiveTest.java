@@ -3,7 +3,6 @@ package com.github.jcestaro.objectivesmanager.model.entity;
 import com.github.jcestaro.objectivesmanager.exception.CannotAddEvidenceException;
 import com.github.jcestaro.objectivesmanager.exception.CannotUpdateStatusException;
 import com.github.jcestaro.objectivesmanager.view.form.ObjectiveForm;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -20,10 +19,10 @@ public class ObjectiveTest {
     @Test
     public void shouldReturnTheExpectedPriority() {
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         BigDecimal priority =
-            whenTheObjectiveCalculatePriority(objective);
+                whenTheObjectiveCalculatePriority(objective);
 
         shouldReturnTheExpectedPriority(priority);
     }
@@ -34,7 +33,7 @@ public class ObjectiveTest {
         expectedException.expectMessage("It is only possible to add evidences in objectives that has the status: [Discontinued, Done], the actual status is: In Progress");
 
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         whenAttemptToAddEvidence(objective);
     }
@@ -42,7 +41,7 @@ public class ObjectiveTest {
     @Test
     public void shouldAddEvidenceWhenStatusIsDone() {
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         whenUpdateStatusAndAddEvidence(objective, ObjectiveStatus.DONE);
 
@@ -52,7 +51,7 @@ public class ObjectiveTest {
     @Test
     public void shouldAddEvidenceWhenStatusIsDiscontinued() {
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         whenUpdateStatusAndAddEvidence(objective, ObjectiveStatus.DISCONTINUED);
 
@@ -65,7 +64,7 @@ public class ObjectiveTest {
         expectedException.expectMessage("Was'nt possible to update your status to Done because there's objectives In Progress or Discontinued");
 
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         whenAddedKeyResultsWithInProgressStatus(objective);
 
@@ -75,7 +74,7 @@ public class ObjectiveTest {
     @Test
     public void shouldAllowToUpdateStatusToDoneWhenAllKeyResultsAreDone() {
         Objective objective =
-            givenAObjectiveThatContainsKeyResultWithStatusDone();
+                givenAObjectiveThatContainsKeyResultWithStatusDone();
 
         whenUpdateStatus(objective, ObjectiveStatus.DONE);
 
@@ -85,7 +84,7 @@ public class ObjectiveTest {
     @Test
     public void shouldAllowToUpdateStatusToDiscontinuedWhenThereIsKeyResults() {
         Objective objective =
-            givenAObjectiveThatContainsKeyResultWithStatusDone();
+                givenAObjectiveThatContainsKeyResultWithStatusDone();
 
         whenUpdateStatus(objective, ObjectiveStatus.DISCONTINUED);
 
@@ -95,7 +94,7 @@ public class ObjectiveTest {
     @Test
     public void shouldAllowToUpdateStatusToDiscontinued() {
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         whenUpdateStatus(objective, ObjectiveStatus.DISCONTINUED);
 

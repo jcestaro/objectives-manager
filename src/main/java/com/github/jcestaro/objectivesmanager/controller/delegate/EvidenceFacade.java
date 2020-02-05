@@ -6,12 +6,13 @@ import com.github.jcestaro.objectivesmanager.model.entity.Evidence;
 import com.github.jcestaro.objectivesmanager.model.entity.Objective;
 import com.github.jcestaro.objectivesmanager.model.service.ObjectiveService;
 import com.github.jcestaro.objectivesmanager.view.viewmodel.EvidenceView;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,9 +20,6 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Component
 public class EvidenceFacade {
@@ -40,11 +38,11 @@ public class EvidenceFacade {
 
     public List<EvidenceView> find(int id) {
         return objectiveService.find(id)
-            .orElseThrow(ObjectiveNotFoundException::new)
-            .getEvidences()
-            .stream()
-            .map(EvidenceView::new)
-            .collect(Collectors.toList());
+                .orElseThrow(ObjectiveNotFoundException::new)
+                .getEvidences()
+                .stream()
+                .map(EvidenceView::new)
+                .collect(Collectors.toList());
     }
 
     public List<EvidenceView> save(@NotNull @NotEmpty List<MultipartFile> archives, int id) throws IOException {
@@ -53,7 +51,7 @@ public class EvidenceFacade {
         Files.createDirectories(folder.toPath());
 
         Objective objective = objectiveService.find(id)
-            .orElseThrow(ObjectiveNotFoundException::new);
+                .orElseThrow(ObjectiveNotFoundException::new);
 
         for (MultipartFile archive : archives) {
             File archiveReceived = new File(folder, Objects.requireNonNull(archive.getOriginalFilename()));
@@ -68,8 +66,8 @@ public class EvidenceFacade {
         }
 
         return objectiveService.save(objective).getEvidences()
-            .stream()
-            .map(EvidenceView::new)
-            .collect(Collectors.toList());
+                .stream()
+                .map(EvidenceView::new)
+                .collect(Collectors.toList());
     }
 }

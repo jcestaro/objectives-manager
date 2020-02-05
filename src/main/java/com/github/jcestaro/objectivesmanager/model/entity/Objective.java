@@ -3,19 +3,12 @@ package com.github.jcestaro.objectivesmanager.model.entity;
 import com.github.jcestaro.objectivesmanager.exception.CannotAddEvidenceException;
 import com.github.jcestaro.objectivesmanager.exception.CannotUpdateStatusException;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Objective {
@@ -137,10 +130,10 @@ public class Objective {
 
     public BigDecimal calculatePriority() {
         return getCompletionPercentage()
-            .add(getInvolvementPercentage())
-            .add(getNecessityPercentage())
-            .add(getUrgencyPercentage())
-            .divide(NUMBER_OF_FIELDS_FOR_AVERAGE, SCALE, BigDecimal.ROUND_HALF_UP);
+                .add(getInvolvementPercentage())
+                .add(getNecessityPercentage())
+                .add(getUrgencyPercentage())
+                .divide(NUMBER_OF_FIELDS_FOR_AVERAGE, SCALE, BigDecimal.ROUND_HALF_UP);
     }
 
     public void addObjective(Objective objective) {
@@ -176,8 +169,8 @@ public class Objective {
 
     private boolean isAllObjectivesDone() {
         return getKeyResults().stream()
-            .map(Objective::getStatus)
-            .allMatch(ObjectiveStatus.DONE::equals);
+                .map(Objective::getStatus)
+                .allMatch(ObjectiveStatus.DONE::equals);
     }
 
     private boolean hasObjectivesUndone() {

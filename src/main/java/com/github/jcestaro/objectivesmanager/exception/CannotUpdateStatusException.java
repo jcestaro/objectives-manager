@@ -8,9 +8,9 @@ public class CannotUpdateStatusException extends BusinessException {
 
     public CannotUpdateStatusException() {
         super(String.format(MESSAGE,
-                            ObjectiveStatus.DONE.getDescription(),
-                            ObjectiveStatus.IN_PROGRESS.getDescription(),
-                            ObjectiveStatus.DISCONTINUED.getDescription())
+                ObjectiveStatus.DONE.getDescription(),
+                ObjectiveStatus.IN_PROGRESS.getDescription(),
+                ObjectiveStatus.DISCONTINUED.getDescription())
         );
     }
 }

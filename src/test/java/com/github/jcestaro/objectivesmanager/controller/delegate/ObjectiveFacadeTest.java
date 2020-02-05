@@ -5,7 +5,6 @@ import com.github.jcestaro.objectivesmanager.model.entity.ObjectiveStatus;
 import com.github.jcestaro.objectivesmanager.model.service.ObjectiveService;
 import com.github.jcestaro.objectivesmanager.view.form.ObjectiveForm;
 import com.github.jcestaro.objectivesmanager.view.viewmodel.ObjectiveView;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,9 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ObjectiveFacadeTest {
@@ -34,10 +31,10 @@ public class ObjectiveFacadeTest {
     @Test
     public void find() {
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         ObjectiveView objectiveView =
-            whenSearchForTheObjective(objective);
+                whenSearchForTheObjective(objective);
 
         objectiveAndObjectiveViewShouldHaveTheSameValues(objective, objectiveView);
     }
@@ -45,10 +42,10 @@ public class ObjectiveFacadeTest {
     @Test
     public void findAll() {
         List<Objective> objectives =
-            givenAListOfObjectives();
+                givenAListOfObjectives();
 
         List<ObjectiveView> objectivesViews =
-            whenSearchForAllObjectives(objectives);
+                whenSearchForAllObjectives(objectives);
 
         bothObjectiveKeyResultsShouldHaveTheSameSize(objectives, objectivesViews);
     }
@@ -56,13 +53,13 @@ public class ObjectiveFacadeTest {
     @Test
     public void save() {
         ObjectiveForm form =
-            givenAValidObjectiveForm();
+                givenAValidObjectiveForm();
 
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         ObjectiveView objectiveView =
-            whenSaveTheObjectiveForm(form, objective);
+                whenSaveTheObjectiveForm(form, objective);
 
         objectiveFormAndObjectiveViewShouldHaveTheSameValues(form, objectiveView);
     }
@@ -70,13 +67,13 @@ public class ObjectiveFacadeTest {
     @Test
     public void saveKeyResult() {
         ObjectiveForm form =
-            givenAValidObjectiveForm();
+                givenAValidObjectiveForm();
 
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         ObjectiveView objectiveView =
-            whenSaveFormIntoObjectiveKeyResultList(form, objective);
+                whenSaveFormIntoObjectiveKeyResultList(form, objective);
 
         objectiveAndObjectiveViewShouldHaveTheSameValues(objective, objectiveView);
     }
@@ -84,13 +81,13 @@ public class ObjectiveFacadeTest {
     @Test
     public void update() {
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         ObjectiveForm form =
-            givenAValidObjectiveFormWithValuesToUpdate();
+                givenAValidObjectiveFormWithValuesToUpdate();
 
         ObjectiveView updatedObjective =
-            whenUpdateObjectiveFields(objective, form);
+                whenUpdateObjectiveFields(objective, form);
 
         objectiveFormAndObjectiveViewShouldHaveTheSameValues(form, updatedObjective);
     }
@@ -98,13 +95,13 @@ public class ObjectiveFacadeTest {
     @Test
     public void updateStatus() {
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         ObjectiveForm form =
-            givenAValidFormWithStatusDone();
+                givenAValidFormWithStatusDone();
 
         ObjectiveView objectiveView =
-            whenUpdateObjectiveStatus(objective, form);
+                whenUpdateObjectiveStatus(objective, form);
 
         thenTheObjectiveStatusShouldBeDone(objectiveView);
     }
@@ -112,10 +109,10 @@ public class ObjectiveFacadeTest {
     @Test
     public void delete() {
         Objective objective =
-            givenAObjectiveWithFilledFields();
+                givenAObjectiveWithFilledFields();
 
         ObjectiveForm form =
-            givenAValidObjectiveForm();
+                givenAValidObjectiveForm();
 
         whenDeleteTheObjective(objective, form);
 

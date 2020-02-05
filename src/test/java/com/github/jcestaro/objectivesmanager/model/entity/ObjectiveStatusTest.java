@@ -5,14 +5,15 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 
 public class ObjectiveStatusTest {
 
     @Test
     public void shouldReturnTheExpectedNumberOfStatusThatAllowToAddEvidences() {
         List<ObjectiveStatus> objectiveStatusList =
-            givenTheStatusWhereYouCanAddEvidences();
+                givenTheStatusWhereYouCanAddEvidences();
 
         shouldReturnTheExpectedNumberOfStatusThatAllowToAddEvidences(objectiveStatusList);
     }
@@ -20,10 +21,10 @@ public class ObjectiveStatusTest {
     @Test
     public void shouldReturnFalseCaseNotAllowedToAddEvidence() {
         ObjectiveStatus status =
-            givenAObjectiveStatusInProgress();
+                givenAObjectiveStatusInProgress();
 
         boolean condition =
-            whenCheckedIsAllowedToAddEvidence(status);
+                whenCheckedIsAllowedToAddEvidence(status);
 
         shouldReturnFalse(condition);
     }

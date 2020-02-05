@@ -32,9 +32,9 @@ public class ObjectiveView {
         this.priorityPercentage = objective.calculatePriority();
 
         this.keyResults = objective.getKeyResults()
-            .stream()
-            .map(ObjectiveView::new)
-            .collect(Collectors.toList());
+                .stream()
+                .map(ObjectiveView::new)
+                .collect(Collectors.toList());
     }
 
     public int getId() {

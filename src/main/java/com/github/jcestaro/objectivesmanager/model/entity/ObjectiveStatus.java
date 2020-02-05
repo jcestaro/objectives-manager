@@ -30,8 +30,8 @@ public enum ObjectiveStatus {
 
     public static List<String> descriptionOfStatusWhereYouCanAddEvidences() {
         return statusWhereYouCanAddEvidences().stream()
-            .map(ObjectiveStatus::getDescription)
-            .collect(Collectors.toList());
+                .map(ObjectiveStatus::getDescription)
+                .collect(Collectors.toList());
     }
 
     public static boolean allowToAddEvidence(ObjectiveStatus status) {
